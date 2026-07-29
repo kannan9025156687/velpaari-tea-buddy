@@ -1,0 +1,204 @@
+/**
+ * =============================================================
+ * admin-layout.css
+ * -------------------------------------------------------------
+ * Structural layout only — positioning, sizing, and flex/grid
+ * behavior of the admin app shell and its regions. Visual styling
+ * of individual components (buttons, order cards, status badges)
+ * lives in admin-components.css.
+ *
+ * Per docs/DESIGN_SYSTEM.md §15.1, the customer app's root
+ * container stays capped at 480px "everywhere" (a chat experience
+ * on any screen). The admin app deliberately does NOT follow that
+ * same rule: it is mobile-first on phones (identical 480px cap by
+ * default) but automatically expands into a wider, denser
+ * dashboard layout on tablet/desktop — see the breakpoints on
+ * #app, .stat-grid, and .order-list below. §16.9's requirement
+ * for full keyboard operability still applies at every width.
+ *
+ * No page-specific content is styled here (Phase 3 builds no
+ * pages) — these are the generic shell/region classes that
+ * Phase 6's page modules (dashboardPage.js, ordersPage.js,
+ * orderDetailPage.js) will render their content into.
+ * =============================================================
+ */
+
+/* ---------- Reset ---------- */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: var(--font-family-base);
+  color: var(--text-primary);
+  overscroll-behavior: none;
+}
+
+/* ---------- Body: ambient gradient background (subtler use than customer — admin favors clarity) ---------- */
+body {
+  min-height: 100dvh;
+  background: linear-gradient(125deg, var(--bg-grad-1), var(--bg-grad-2) 50%, var(--bg-grad-3));
+  background-size: 300% 300%;
+  animation: gradientShift 22s ease infinite;
+  position: relative;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 30%; }
+  50% { background-position: 100% 70%; }
+  100% { background-position: 0% 30%; }
+}
+
+/* ---------- App shell ----------
+   Mobile-first: identical to the customer app's 480px cap on
+   phones. Unlike the customer app (a chat experience that stays
+   480px "everywhere" per docs/DESIGN_SYSTEM.md §15.1), the admin
+   app is a staff dashboard — on tablet/desktop it automatically
+   expands into a wider, denser layout instead of staying pinned
+   to phone width. The breakpoints below are the only place this
+   differs from customer/css/layout.css. */
+#app {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tablet and up: widen the shell and let dashboard grids use the
+   extra space instead of just centering more empty margin. */
+@media (min-width: 768px) {
+  #app {
+    max-width: 900px;
+  }
+}
+
+/* Desktop: widen further into a real dashboard layout. */
+@media (min-width: 1200px) {
+  #app {
+    max-width: 1200px;
+  }
+}
+
+/* ---------- Top bar ---------- */
+.admin-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+@media (min-width: 768px) {
+  .admin-header {
+    padding: var(--space-4) var(--space-6);
+  }
+}
+
+.admin-header__title {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---------- Scrollable main content region ---------- */
+.admin-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+  padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  .admin-main {
+    padding: var(--space-6);
+  }
+}
+
+/* ---------- Dashboard stat card grid skeleton (docs/DESIGN_SYSTEM.md — dashboard cards) ---------- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .stat-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+/* ---------- Filter/search bar skeleton ---------- */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* ---------- Order list skeleton ----------
+   Mobile: single-column stack. Tablet/desktop: a real grid, so
+   the extra width becomes more visible orders at a glance rather
+   than wider single-column cards — the core of "automatically
+   expand into a responsive dashboard layout" for this region. */
+.order-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .order-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .order-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Holds the currently-routed page's content. A sibling of the
+   persistent bottom nav (both children of #app) so that mounting/
+   unmounting a page never touches the nav bar — see
+   admin/js/main.js's mountPage(). */
+#page-root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* allows .admin-main's overflow-y:auto to actually scroll within the flex layout */
+}
+
+/* ---------- Bottom navigation (if used by Phase 6/7 routing) ---------- */
+.admin-bottom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: var(--space-2);
+  padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+
+/* ---------- Small-screen adjustments ---------- */
+@media (max-width: 360px) {
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+}

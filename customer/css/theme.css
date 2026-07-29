@@ -1,0 +1,132 @@
+/**
+ * =============================================================
+ * theme.css (customer)
+ * -------------------------------------------------------------
+ * Design tokens ONLY — every custom property here is defined in
+ * docs/DESIGN_SYSTEM.md and this file is that document's literal
+ * implementation. No component styling lives here (see
+ * layout.css and components.css) and no value should be invented
+ * ad hoc elsewhere: if a color/spacing/radius/shadow value is
+ * needed and it isn't a token below, DESIGN_SYSTEM.md is updated
+ * first, per that document's closing "what's locked" section.
+ *
+ * Dark theme is the default (:root). Light theme overrides via
+ * [data-theme="light"] on <html>. No JavaScript is required for
+ * the default (dark) rendering — themeManager.js (a later-phase
+ * module, not part of this foundation) only adds the ability to
+ * switch to light and remember the choice.
+ * =============================================================
+ */
+
+:root {
+  /* ---------- Brand gradient (identity — used sparingly) ---------- */
+  --grad-violet: #7b6cff;
+  --grad-pink: #ff6ec7;
+  --grad-orange: #ff9a6c;
+  --grad-teal: #22d1c1;
+  --grad-blue: #3fa9ff;
+
+  /* ---------- Dark theme surface tokens (default) ---------- */
+  --bg-grad-1: #1a123a;
+  --bg-grad-2: #3a1440;
+  --bg-grad-3: #2a0f30;
+  --glass-bg: rgba(255, 255, 255, 0.10);
+  --glass-border: rgba(255, 255, 255, 0.28);
+  --text-primary: #fffaf6;
+  --text-dim: rgba(255, 250, 246, 0.70);
+  --bubble-bot: rgba(255, 255, 255, 0.14);
+  --bubble-bot-border: rgba(255, 255, 255, 0.18);
+  --input-bg: rgba(255, 255, 255, 0.18);
+  --header-bg: rgba(255, 255, 255, 0.10);
+  --drawer-bg: rgba(30, 20, 50, 0.92);
+
+  /* ---------- Semantic colors (theme-independent) ---------- */
+  --success: #3cff9e;
+  --warning: #ffd166;
+  --danger: #ff5c7a;
+  --info: #3fa9ff;
+
+  /* ---------- "On-color" text/icon tokens ----------
+     Used whenever text/an icon sits on top of a colored fill
+     (a gradient button, a status badge, a warning badge) rather
+     than on the app's normal background. Defined once here so
+     components.css never hardcodes a contrast color inline. */
+  --on-gradient: #062526;
+  --on-warning: #2a1500;
+  --on-success: #04241a;
+  --on-danger: #ffffff;
+  --on-info: #ffffff;
+
+  /* ---------- Overlay / focus / highlight utility tokens ---------- */
+  --overlay-scrim: rgba(0, 0, 0, 0.4);
+  --focus-ring: rgba(34, 209, 193, 0.6);
+  --highlight-pulse: rgba(60, 255, 158, 0.28);
+  --shadow-glow-pink: 0 8px 24px rgba(255, 110, 199, 0.45);
+
+  /* ---------- Typography scale ---------- */
+  --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --text-display: 30px;
+  --text-h1: 22px;
+  --text-h2: 17px;
+  --text-body: 14.5px;
+  --text-label: 13.5px;
+  --text-meta: 12px;
+  --text-micro: 10.5px;
+
+  /* ---------- Spacing scale (4px base) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+
+  /* ---------- Border radius scale ---------- */
+  --radius-pill: 999px;
+  --radius-lg: 26px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+  --radius-tail: 4px;
+  --radius-circle: 50%;
+
+  /* ---------- Shadow scale ---------- */
+  --shadow-soft: 0 8px 32px rgba(20, 10, 40, 0.35);
+  --shadow-card: 0 3px 10px rgba(0, 0, 0, 0.12);
+  --shadow-fab: 0 6px 16px rgba(34, 209, 193, 0.40);
+  --shadow-drawer: 0 -10px 40px rgba(0, 0, 0, 0.35);
+  --shadow-toast: 0 6px 20px rgba(0, 0, 0, 0.25);
+
+  /* ---------- Motion ---------- */
+  --ease-standard: ease;
+  --ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-drawer: 320ms;
+}
+
+/* ---------- Light theme overrides ---------- */
+html[data-theme='light'] {
+  --bg-grad-1: #fff1e6;
+  --bg-grad-2: #ffe0f0;
+  --bg-grad-3: #e8f9f6;
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.90);
+  --text-primary: #2a1a35;
+  --text-dim: rgba(42, 26, 53, 0.65);
+  --bubble-bot: rgba(255, 255, 255, 0.75);
+  --bubble-bot-border: rgba(255, 255, 255, 0.90);
+  --input-bg: rgba(255, 255, 255, 0.75);
+  --header-bg: rgba(255, 255, 255, 0.55);
+  --drawer-bg: rgba(255, 255, 255, 0.97);
+}
+
+/* ---------- Reduced motion (see docs/DESIGN_SYSTEM.md §16) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 1ms;
+    --duration-base: 1ms;
+    --duration-drawer: 1ms;
+  }
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Velpaari Tea Buddy — Talk. Order. Enjoy.</title>
+<meta name="description" content="Chat with Velpaari Tea Buddy, our friendly tea shop assistant, and get your order placed in seconds.">
+<meta name="theme-color" content="#7b6cff">
+
+<!--
+  Theme design tokens, structural layout, and component styles.
+  See docs/DESIGN_SYSTEM.md for the specification each file
+  implements.
+-->
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+
+<!--
+  Set the theme attribute before first paint, to avoid a flash of
+  the wrong theme. Deliberately a classic (non-module) script so
+  it runs synchronously, blocking, before anything renders — an
+  ES module script would be deferred and could still flash.
+
+  NOTE: 'teabuddy_theme' below must stay in sync with
+  config/constants.js's STORAGE_KEYS.THEME. It is duplicated
+  here (rather than imported) specifically so this script can
+  stay a tiny, synchronous, non-module snippet.
+
+  This only READS a previously-saved preference or the system
+  preference — it does not add any toggle UI. The actual
+  dark/light toggle control is added by a later-phase module
+  (customer/js/modules/themeManager.js, not part of this
+  foundation phase).
+-->
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem('teabuddy_theme');
+      var theme = saved || (
+        window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+          ? 'light'
+          : 'dark'
+      );
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+</head>
+<body>
+
+<!-- Ambient background chrome — persistent across every screen, not page-specific content -->
+<div class="bg-blob blob-1"></div>
+<div class="bg-blob blob-2"></div>
+<div class="bg-blob blob-3"></div>
+
+<!--
+  Application mount point. Empty by design in this foundation
+  phase — Phase 5's router-driven pages (welcomePage.js,
+  namePage.js, chatPage.js) render their content into this
+  container once built.
+-->
+<div id="app"></div>
+
+<!-- Persistent overlay layer for the order-confirmation confetti celebration (docs/DESIGN_SYSTEM.md §14.3) -->
+<div id="confetti-layer"></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

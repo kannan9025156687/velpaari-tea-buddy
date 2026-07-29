@@ -1,0 +1,603 @@
+/**
+ * =============================================================
+ * components.css (customer)
+ * -------------------------------------------------------------
+ * Visual styling for reusable UI pieces used across the customer
+ * app: glass cards, buttons/chips, inputs, chat bubbles, receipt
+ * cards, cart item rows, and confetti. Every rule here implements
+ * a specific section of docs/DESIGN_SYSTEM.md — see the section
+ * comment above each block.
+ *
+ * This file styles component CLASSES only; no page currently
+ * uses them (Phase 3 builds no pages) — Phase 5 will assemble
+ * these into welcomePage.js, namePage.js, and chatPage.js.
+ *
+ * shared/components/components.css (Phase 4) styles a DIFFERENT
+ * set of pieces — toast/modal/loader/dialog/emptyState — shared
+ * with the admin app. Nothing in this file duplicates those.
+ * =============================================================
+ */
+
+/* =========================================================
+   Glass card — docs/DESIGN_SYSTEM.md §10.1
+========================================================= */
+.glass-card {
+  width: 100%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-7) var(--space-6);
+  text-align: center;
+}
+
+.logo-orb {
+  width: 78px;
+  height: 78px;
+  margin: 0 auto var(--space-3);
+  border-radius: var(--radius-circle);
+  background: linear-gradient(135deg, var(--grad-orange), var(--grad-pink));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  box-shadow: var(--shadow-glow-pink);
+  animation: orbPulse 3s ease-in-out infinite;
+}
+
+.logo-orb.logo-orb--small {
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+}
+
+@keyframes orbPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+/* =========================================================
+   Layout utility — vertical rhythm inside cards
+========================================================= */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Visually hides an element while keeping it in the accessibility
+   tree — used for form labels that would be visually redundant
+   next to a placeholder, per docs/DESIGN_SYSTEM.md §16.8 ("a
+   placeholder is never the only label"). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =========================================================
+   Chat header pieces — avatar, status, live-cart trigger
+========================================================= */
+.avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-circle);
+  background: linear-gradient(135deg, var(--grad-orange), var(--grad-pink));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.online-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 11px;
+  height: 11px;
+  background: var(--success);
+  border: 2px solid var(--drawer-bg);
+  border-radius: var(--radius-circle);
+}
+
+.header-name {
+  font-size: var(--text-h2);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.header-status {
+  font-size: var(--text-meta);
+  color: var(--text-dim);
+}
+
+.cart-pill-btn {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-3);
+  font-family: inherit;
+  font-size: var(--text-label);
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.cart-pill-btn.cart-pill-btn--pulse {
+  transform: scale(1.15);
+}
+
+/* =========================================================
+   Typography helpers — docs/DESIGN_SYSTEM.md §3
+========================================================= */
+h1 { font-size: var(--text-h1); font-weight: 800; line-height: 1.25; margin: 0; }
+h2 { font-size: var(--text-h2); font-weight: 700; line-height: 1.3; margin: 0; }
+p { font-size: var(--text-body); line-height: 1.45; margin: 0; }
+
+.text-display {
+  font-size: var(--text-display);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  margin: var(--space-1) 0 2px;
+}
+
+.text-display .text-display__accent {
+  background: linear-gradient(90deg, var(--grad-teal), var(--grad-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-tagline {
+  color: var(--text-dim);
+  font-size: var(--text-body);
+  margin: 0 0 var(--space-6);
+}
+
+.text-meta {
+  color: var(--text-dim);
+  font-size: var(--text-meta);
+}
+
+/* =========================================================
+   Buttons — docs/DESIGN_SYSTEM.md §8
+   Shared baseline: pill radius, label typography, 44px min
+   tap target, press feedback. Variant classes below only
+   change fill/color.
+========================================================= */
+.btn {
+  min-height: 44px;
+  padding: var(--space-3) var(--space-5);
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: var(--text-label);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
+}
+
+.btn:active {
+  transform: scale(0.94);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, var(--grad-teal), var(--grad-blue));
+  color: var(--on-gradient);
+  box-shadow: var(--shadow-fab);
+}
+
+.btn--secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1.4px solid var(--glass-border);
+}
+
+.btn--danger {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+
+.btn--icon {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: var(--radius-circle);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn--icon.btn--icon-fab {
+  background: linear-gradient(135deg, var(--grad-teal), var(--grad-blue));
+  border: none;
+  box-shadow: var(--shadow-fab);
+}
+
+.btn--icon-fab svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--on-gradient);
+}
+
+/* =========================================================
+   Chips — the customer app's primary input method
+   docs/DESIGN_SYSTEM.md §8, §9
+========================================================= */
+.chip {
+  min-height: 40px;
+  background: var(--glass-bg);
+  border: 1.4px solid var(--glass-border);
+  color: var(--text-primary);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: var(--text-label);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform var(--duration-fast) var(--ease-standard), background var(--duration-fast) var(--ease-standard);
+}
+
+.chip:active {
+  transform: scale(0.93);
+}
+
+.chip.chip--accent {
+  background: linear-gradient(135deg, var(--grad-teal), var(--grad-blue));
+  color: var(--on-gradient);
+  border: none;
+}
+
+.chip.chip--ghost {
+  background: transparent;
+  border: 1.4px solid var(--glass-border);
+  color: var(--text-dim);
+}
+
+/* =========================================================
+   Inputs — docs/DESIGN_SYSTEM.md §9
+========================================================= */
+.text-input {
+  width: 100%;
+  min-height: 44px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--glass-border);
+  outline: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: var(--text-body);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-pill);
+}
+
+.text-input::placeholder {
+  color: var(--text-dim);
+}
+
+.text-input:focus {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.qty-stepper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.qty-stepper__btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-circle);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  font-size: var(--text-h2);
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-stepper__value {
+  min-width: 16px;
+  text-align: center;
+  font-weight: 700;
+  font-size: var(--text-body);
+}
+
+/* =========================================================
+   Chat bubbles — docs/DESIGN_SYSTEM.md §11
+========================================================= */
+.msg-row {
+  display: flex;
+  width: 100%;
+  margin: 3px 0;
+  animation: msgIn var(--duration-base) var(--ease-standard);
+}
+
+.msg-row.msg-row--bot { justify-content: flex-start; }
+.msg-row.msg-row--user { justify-content: flex-end; }
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.bubble {
+  max-width: 80%;
+  padding: var(--space-2) var(--space-3) var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-body);
+  line-height: 1.45;
+  box-shadow: var(--shadow-card);
+  word-wrap: break-word;
+}
+
+.bubble.bubble--bot {
+  background: var(--bubble-bot);
+  border: 1px solid var(--bubble-bot-border);
+  backdrop-filter: blur(8px);
+  border-top-left-radius: var(--radius-tail);
+  color: var(--text-primary);
+}
+
+.bubble.bubble--user {
+  background: linear-gradient(135deg, var(--grad-teal), var(--grad-blue));
+  color: var(--on-gradient);
+  border-top-right-radius: var(--radius-tail);
+  font-weight: 500;
+}
+
+.bubble__meta {
+  display: block;
+  font-size: var(--text-micro);
+  opacity: 0.6;
+  margin-top: var(--space-1);
+  text-align: right;
+}
+
+.typing-bubble {
+  background: var(--bubble-bot);
+  border: 1px solid var(--bubble-bot-border);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border-top-left-radius: var(--radius-tail);
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  width: fit-content;
+}
+
+.typing-bubble__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-circle);
+  background: var(--text-primary);
+  opacity: 0.7;
+  animation: typingBlink 1.2s infinite ease-in-out;
+}
+
+.typing-bubble__dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-bubble__dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBlink {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* =========================================================
+   Receipt / summary card — docs/DESIGN_SYSTEM.md §10.2
+========================================================= */
+.receipt-card {
+  background: var(--bubble-bot);
+  border: 1px solid var(--bubble-bot-border);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  max-width: 92%;
+  font-size: var(--text-label);
+  animation: msgIn var(--duration-base) var(--ease-standard);
+}
+
+.receipt-card__title {
+  font-size: var(--text-h2);
+  font-weight: 800;
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: linear-gradient(90deg, var(--grad-teal), var(--grad-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.receipt-card__row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-1) 0;
+  border-bottom: 1px dashed var(--glass-border);
+}
+
+.receipt-card__row.receipt-card__row--total {
+  border-bottom: none;
+  margin-top: var(--space-2);
+  font-weight: 800;
+  font-size: var(--text-h2);
+}
+
+.receipt-card__meta {
+  font-size: var(--text-meta);
+  color: var(--text-dim);
+  margin-bottom: var(--space-2);
+}
+
+.receipt-card__meta b {
+  color: var(--text-primary);
+}
+
+.receipt-card__actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.receipt-card__actions .btn {
+  flex: 1;
+}
+
+.prep-time-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  background: linear-gradient(135deg, var(--warning), var(--grad-orange));
+  color: var(--on-warning);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-weight: 800;
+  font-size: var(--text-label);
+  margin-top: var(--space-2);
+}
+
+/* =========================================================
+   Live cart drawer contents — docs/DESIGN_SYSTEM.md §9, §15.5
+========================================================= */
+.cart-drawer {
+  background: var(--drawer-bg);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: var(--shadow-drawer);
+}
+
+.cart-drawer__handle {
+  width: 42px;
+  height: 5px;
+  border-radius: 4px;
+  background: var(--glass-border);
+  margin: var(--space-2) auto var(--space-3);
+}
+
+.cart-empty-state {
+  text-align: center;
+  color: var(--text-dim);
+  padding: var(--space-7) var(--space-3);
+  font-size: var(--text-body);
+}
+
+.cart-item-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+}
+
+.cart-item-row__emoji {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.cart-item-row__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-row__name {
+  font-size: var(--text-body);
+  font-weight: 700;
+}
+
+.cart-item-row__price {
+  font-size: var(--text-meta);
+  color: var(--text-dim);
+}
+
+.cart-item-row__remove {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-body);
+  margin-bottom: var(--space-3);
+}
+
+.cart-total-row b {
+  font-size: var(--text-h1);
+}
+
+/* =========================================================
+   Confetti — docs/DESIGN_SYSTEM.md §14.3
+========================================================= */
+#confetti-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 9px;
+  height: 14px;
+  opacity: 0.9;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(600deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece {
+    display: none;
+  }
+}

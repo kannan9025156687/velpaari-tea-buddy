@@ -1,0 +1,230 @@
+/**
+ * =============================================================
+ * layout.css (customer)
+ * -------------------------------------------------------------
+ * Structural layout only — positioning, sizing, and flex/grid
+ * behavior of the app shell and its regions. Visual styling of
+ * individual components (buttons, chips, bubbles, cards) lives in
+ * components.css; this file only answers "where is it and how
+ * big is it," not "what color is it."
+ *
+ * Mobile-first per docs/DESIGN_SYSTEM.md §15: 480px max content
+ * width, centered, on every viewport — this is a mobile
+ * experience everywhere, not a responsive breakpoint system.
+ *
+ * No page-specific content is styled here (Phase 3 builds no
+ * pages) — these are the generic shell/region classes that
+ * Phase 5's page modules will render their content into.
+ * =============================================================
+ */
+
+/* ---------- Reset ---------- */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: var(--font-family-base);
+  color: var(--text-primary);
+  overscroll-behavior: none;
+}
+
+/* ---------- Body: ambient gradient background ---------- */
+body {
+  min-height: 100dvh;
+  background: linear-gradient(125deg, var(--bg-grad-1), var(--bg-grad-2) 50%, var(--bg-grad-3));
+  background-size: 300% 300%;
+  animation: gradientShift 18s ease infinite;
+  overflow: hidden;
+  position: relative;
+  transition: background 0.4s ease, color 0.3s ease;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 30%; }
+  50% { background-position: 100% 70%; }
+  100% { background-position: 0% 30%; }
+}
+
+/* ---------- Ambient floating blobs (see docs/DESIGN_SYSTEM.md §14.4) ---------- */
+.bg-blob {
+  position: fixed;
+  border-radius: var(--radius-circle);
+  filter: blur(50px);
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bg-blob.blob-1 { width: 260px; height: 260px; background: var(--warning); top: -60px; left: -60px; animation: floatA 12s ease-in-out infinite; }
+.bg-blob.blob-2 { width: 220px; height: 220px; background: var(--grad-pink); bottom: -50px; right: -40px; animation: floatB 14s ease-in-out infinite; }
+.bg-blob.blob-3 { width: 180px; height: 180px; background: var(--grad-teal); bottom: 30%; left: -60px; animation: floatA 16s ease-in-out infinite; }
+
+@keyframes floatA {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(30px) translateX(20px); }
+}
+@keyframes floatB {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-25px) translateX(-15px); }
+}
+
+/* ---------- App shell ---------- */
+#app {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 0 auto;
+  height: 100dvh;
+}
+
+/* ---------- Screens ---------- */
+.screen {
+  display: none;
+  height: 100%;
+  padding: var(--space-5);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  animation: screenIn var(--duration-base) var(--ease-standard);
+}
+
+.screen.is-active {
+  display: flex;
+}
+
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Chat shell (the chat screen's internal layout) ---------- */
+.chat-shell {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--glass-border);
+  flex-shrink: 0;
+  backdrop-filter: blur(10px);
+}
+
+.chat-header__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-3) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.chat-area::-webkit-scrollbar {
+  width: 0;
+}
+
+.chips-host {
+  padding: 0 var(--space-2);
+  flex-shrink: 0;
+}
+
+.chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-1) var(--space-3);
+}
+
+/* Deliberate exception to "no horizontal scroll" (docs/DESIGN_SYSTEM.md §15.7):
+   apply this modifier when a chip set has too many options to wrap
+   sensibly, so it scrolls as a single row instead. */
+.chips-wrap.chips-wrap--scroll {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: var(--space-3);
+}
+
+.input-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--glass-border);
+  flex-shrink: 0;
+}
+
+/* ---------- Cart drawer (bottom sheet) skeleton ---------- */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-scrim);
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.cart-overlay.is-open {
+  display: flex;
+}
+
+.cart-drawer {
+  width: 100%;
+  max-width: 480px;
+  max-height: 78vh;
+  padding: var(--space-3) var(--space-5) calc(var(--space-6) + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform var(--duration-drawer) var(--ease-spring);
+}
+
+.cart-overlay.is-open .cart-drawer {
+  transform: translateY(0);
+}
+
+.cart-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.cart-drawer__items {
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-1) 0 var(--space-2);
+}
+
+.cart-drawer__footer {
+  padding-top: var(--space-3);
+  margin-top: var(--space-1);
+}
+
+/* ---------- Small-screen adjustments ---------- */
+@media (max-width: 360px) {
+  .screen {
+    padding: var(--space-4);
+  }
+}
